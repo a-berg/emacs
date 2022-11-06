@@ -1,0 +1,252 @@
+#+title: Example Crafted Emacs User Configuration File
+#+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
+
+Crafted Emacs supports user customization through a =config.org= file similar to
+this one.
+
+To get you started, copy both example files to your Crafted Emacs configuration
+directory, e.g.:
+- copy =examples/example-config.el= to =~/.crafted-emacs/config.el=
+- copy =examples/example-config.org= to =~/.crafted-emacs/config.org=
+- restart Emacs
+
+After that, whenever you edit =config.org= in Emacs and save it, it updates
+=config.el= in the same directory.
+
+See the [[https://orgmode.org/manual/Extracting-Source-Code.html][Org Manual]] for details and alternatives.
+
+#+begin_src emacs-lisp
+  ;;; config.el -- Example Crafted Emacs user customization file -*- lexical-binding: t; -*-
+  ;; This file is generated from config.org. If you want to edit the
+  ;; configuration, DO NOT edit config.el, edit config.org, instead.
+
+  ;; Tangle the code blocks to config.el on save.
+  (defun org-babel-tangle-config ()
+    (when (string-equal (buffer-file-name)
+                        (expand-file-name "config.org" crafted-config-path))
+      ;; Dynamic scoping to the rescue
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook #'org-babel-tangle-config)))
+#+end_src
+
+In your configuration you can set any Emacs configuration variable, face
+attributes, themes, etc as you normally would.
+See the README.org file in this repository for additional information.
+
+* Crafted Modules
+
+At the moment, Crafted Emacs offers the following modules. Comment out
+everything you don't want to use.
+At the very least, you should decide whether or not you want to use [[https://github.com/emacs-evil/evil][evil-mode]],
+as it will greatly change how you interact with Emacs. So, if you prefer
+Vim-style keybindings over vanilla Emacs keybindings remove the comment
+in the line about =crafted-evil= below.
+
+#+begin_src emacs-lisp
+  (require 'crafted-defaults)    ; Sensible default settings for Emacs
+  (require 'crafted-updates)     ; Tools to upgrade Crafted Emacs
+  (require 'crafted-completion)  ; selection framework based on `vertico`
+  (require 'crafted-ui)          ; Better UI experience (modeline etc.)
+  (require 'crafted-windows)     ; Window management configuration
+  (require 'crafted-python)      ; python, needs customization
+  (require 'crafted-editing)     ; Whitspace trimming, auto parens etc.
+  (require 'crafted-evil)        ; An `evil-mode` configuration
+  (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
+  (require 'crafted-project)     ; built-in alternative to projectile
+  (require 'crafted-speedbar)    ; built-in file-tree
+  (require 'crafted-screencast)  ; show current command and binding in modeline
+  (require 'crafted-compile)     ; automatically compile some emacs lisp files
+#+end_src
+
+* Font and theme settings
+
+** Font settings
+
+Set the default face. The default face is the basis for most other faces used in
+Emacs. A "face" is a configuration including font, font size, foreground and background
+colors and other attributes.  The fixed-pitch and fixed-pitch-serif faces are monospace
+faces generally used as the default face for code. The variable-pitch face is used when
+`variable-pitch-mode' is turned on, generally whenever a non-monospace face is
+preferred.
+
+#+begin_src emacs-lisp
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (custom-set-faces
+               `(default ((t (:font "Iosevka SS04 14" :weight normal))))
+               `(fixed-pitch ((t (:inherit (default)))))
+               `(fixed-pitch-serif ((t (:inherit (default)))))
+               `(variable-pitch ((t (:font "Iosevka Aile 14" :weight normal)))))))
+#+end_src
+
+** Theme settings
+
+Themes are color customization packages which coordinate the various colors, and in some
+cases, font-sizes for various aspects of text editing within Emacs, toolbars, tabbars
+and modeline. Several themes are built-in to Emacs, by default, Crafted Emacs uses the
+`deeper-blue' theme. Here is an example of loading a different theme from the venerable
+Doom Emacs project.
+
+
+#+begin_src emacs-lisp
+  (crafted-package-install-package 'doom-themes)
+  (progn
+    (disable-theme 'deeper-blue)          ; first turn off the deeper-blue theme
+    (load-theme 'doom-homage-white t))    ; load the doom-homage theme
+#+end_src
+
+** Cursor blink
+
+I don't like the cursor to blink.
+
+#+begin_src emacs-lisp
+  (blink-cursor-mode 0)
+#+end_src
+
+** Other settings
+
+I don't like to maximize my editor from the get-go, but the default frame (80×24) is too
+small.
+
+#+begin_src emacs-lisp
+  ;; frame size at startup
+  (when window-system (set-frame-size (selected-frame) 90 50))
+#+end_src
+
+I have grown accustomed to 88 column width due to =black= Python formatting. I'd like for
+the rest of my text to be like that too.
+
+#+begin_src emacs-lisp
+  ;; fill column
+  (setq-default fill-column 88)
+#+end_src
+
+* =whick-key= and keybindings
+
+** which-key.el
+
+Maybe this should go into the ui?
+
+#+begin_src emacs-lisp
+  (crafted-package-install-package 'which-key)
+#+end_src
+
+** keybindings
+
+Since I first used Spacemacs, I have grown some muscle memory for my most used commands.
+
+Define leader and local leader keys.
+
+#+begin_src emacs-lisp
+  ;; set leader key in all states
+  (evil-set-leader nil (kbd "C-SPC"))
+  ;; set leader key in normal state
+  (evil-set-leader 'normal (kbd "SPC"))
+  ;; set local leader
+  (evil-set-leader 'normal "," t)
+#+end_src
+
+Quit/Restart Emacs:
+
+#+begin_src emacs-lisp
+(evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
+(evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
+;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'evil-quit-all)
+#+end_src
+
+File related bindings:
+
+#+begin_src emacs-lisp
+  ;; find file
+  (evil-define-key 'normal 'global (kbd "<leader>f") nil "Files")
+  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
+  ;; save file
+  (evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
+#+end_src
+
+Buffer related bindings:
+
+#+begin_src emacs-lisp
+  (evil-define-key 'normal 'global (kbd "<leader>b") nil "Buffers")
+  ;; close buffer
+  (evil-define-key 'normal 'global (kbd "<leader>bd") 'kill-this-buffer)
+  ;; change buffer
+  (evil-define-key 'normal 'global (kbd "<leader>bb") 'switch-to-buffer)
+#+end_src
+
+Quickly invoke commands (=M-x=):
+
+#+begin_src emacs-lisp
+  ;; bind M-x to SPC SPC
+  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command "M-x")
+#+end_src
+
+Resize frame (still not entirely convinced...):
+
+#+begin_src emacs-lisp
+(evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame)  90)))
+(evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 180)))
+(evil-define-key 'normal 'global (kbd "<leader>F3") '(lambda () (interactive)(set-frame-width (selected-frame) 270)))
+#+end_src
+
+Text:
+
+#+begin_src emacs-lisp
+  ;; Useful to insert unicode quickly
+  (evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
+#+end_src
+
+* Python
+
+Change the eglot default server.
+
+#+begin_src emacs-lisp
+  ;; make Eglot use `pylsp` instead of `pyright`.
+  ; (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+#+end_src
+
+I tend to use conda a lot (being data scientist/ML evildoer and all) so probably change that?
+
+* Markdown
+
+Possibly should move to a small module. Maybe try to use marksman idk.
+
+#+begin_src emacs-lisp
+  (crafted-package-install-package 'markdown-mode)
+#+end_src
+
+* Magit
+
+Magit is one of these packages in Emacs that you can't find anywhere else.
+
+#+begin_src emacs-lisp
+(crafted-package-install-package 'magit)
+#+end_src
+
+I'm starting to think: should I move things like this to a module, and define
+keybindings and other customizations there? Probably.
+
+* Custom.el
+
+By default, Crafted Emacs keeps your config file clean. All the customization
+settings that Emacs normally automatically adds to your config.el go into
+the file =custom.el= instead. If you don't want this, set the respective
+variable to =nil=:
+
+#+begin_src emacs-lisp
+  ;; To not load `custom.el' after `config.el', uncomment this line.
+  ;; (setq crafted-load-custom-file nil)
+#+end_src
+
+* Tangling to early-config.el
+
+If you need to make settings to =early-config.el=, you can do that from here, too.
+Just begin the source code block with:
+
+#+begin_src org
+  ,#+begin_src emacs-lisp :tangle ./early-config.el
+#+end_src

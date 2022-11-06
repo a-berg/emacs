@@ -1,0 +1,10 @@
+* Description
+
+Minimal (I guess?) Emacs config based off the Crafted Emacs configuration.
+
+* Installation
+
+First, clone =crafted-emacs= into =~/.config/emacs=.
+Then, clone this repo to =~/.config/crafted-emacs/=.
+
+TODO: add a makefile for these steps.
