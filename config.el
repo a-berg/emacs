@@ -31,10 +31,10 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (custom-set-faces
-             `(default ((t (:font "Iosevka SS04 14" :weight normal))))
+             `(default ((t (:font "Iosevka SS04 14" :weight semi-light))))
              `(fixed-pitch ((t (:inherit (default)))))
              `(fixed-pitch-serif ((t (:inherit (default)))))
-             `(variable-pitch ((t (:font "Iosevka Aile 14" :weight normal)))))))
+             `(variable-pitch ((t (:font "Iosevka Aile 14" :weight semi-light)))))))
 
 (crafted-package-install-package 'doom-themes)
 (progn
@@ -44,7 +44,8 @@
 (blink-cursor-mode 0)
 
 ;; frame size at startup
-(when window-system (set-frame-size (selected-frame) 90 50))
+(set-frame-width (selected-frame) 90)
+(set-frame-height (selected-frame) 50)
 
 ;; fill column
 (setq-default fill-column 88)
@@ -84,8 +85,8 @@
 ;; Useful to insert unicode quickly
 (evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
 
-;; make Eglot use `pylsp` instead of `pyright`.
-; (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+(crafted-package-install-package 'conda)
+(require 'conda)
 
 (crafted-package-install-package 'markdown-mode)
 

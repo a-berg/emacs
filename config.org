@@ -77,10 +77,10 @@ preferred.
   (add-hook 'emacs-startup-hook
             (lambda ()
               (custom-set-faces
-               `(default ((t (:font "Iosevka SS04 14" :weight normal))))
+               `(default ((t (:font "Iosevka SS04 14" :weight semi-light))))
                `(fixed-pitch ((t (:inherit (default)))))
                `(fixed-pitch-serif ((t (:inherit (default)))))
-               `(variable-pitch ((t (:font "Iosevka Aile 14" :weight normal)))))))
+               `(variable-pitch ((t (:font "Iosevka Aile 14" :weight semi-light)))))))
 #+end_src
 
 ** Theme settings
@@ -114,7 +114,8 @@ small.
 
 #+begin_src emacs-lisp
   ;; frame size at startup
-  (when window-system (set-frame-size (selected-frame) 90 50))
+  (set-frame-width (selected-frame) 90)
+  (set-frame-height (selected-frame) 50)
 #+end_src
 
 I have grown accustomed to 88 column width due to =black= Python formatting. I'd like for
@@ -202,14 +203,14 @@ Text:
 
 * Python
 
-Change the eglot default server.
+I tend to use conda a lot (being data scientist/ML evildoer and all) so probably change
+that?
 
 #+begin_src emacs-lisp
-  ;; make Eglot use `pylsp` instead of `pyright`.
-  ; (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+  (crafted-package-install-package 'conda)
+  (require 'conda)
 #+end_src
 
-I tend to use conda a lot (being data scientist/ML evildoer and all) so probably change that?
 
 * Markdown
 
@@ -224,7 +225,7 @@ Possibly should move to a small module. Maybe try to use marksman idk.
 Magit is one of these packages in Emacs that you can't find anywhere else.
 
 #+begin_src emacs-lisp
-(crafted-package-install-package 'magit)
+  (crafted-package-install-package 'magit)
 #+end_src
 
 I'm starting to think: should I move things like this to a module, and define
@@ -248,5 +249,5 @@ If you need to make settings to =early-config.el=, you can do that from here, to
 Just begin the source code block with:
 
 #+begin_src org
-  ,#+begin_src emacs-lisp :tangle ./early-config.el
+  #+begin_src emacs-lisp :tangle ./early-config.el
 #+end_src
