@@ -36,10 +36,31 @@
              `(fixed-pitch-serif ((t (:inherit (default)))))
              `(variable-pitch ((t (:font "Iosevka Aile 14" :weight semi-light)))))))
 
-(crafted-package-install-package 'doom-themes)
+;; (crafted-package-install-package 'doom-themes)
+(setq modus-themes-syntax '(green-strings yellow-comments)
+      modus-themes-fringes 'subtle
+      modus-themes-italic-constructs nil
+      modus-themes-bold-constructs t
+      modus-themes-org-blocks 'gray-background
+      modus-themes-hl-line '(intense)
+      modus-themes-paren-match '(intense)
+      modus-themes-mode-line '(borderless))
+
+(setq modus-themes-operandi-color-overrides
+        '((bg-main . "#f7f7f7")
+          (bg-dim . "#f2f2f2")
+          (bg-alt . "#e8e8e8")
+          (bg-hl-line . "#eaeaef")
+          (bg-active . "#e0e0e0")
+          (bg-inactive . "#e6e6e6")
+          (bg-region . "#b5b5b5")
+          (bg-header . "#e4e4e4")
+          (bg-tab-active . "#f5f5f5")
+          (bg-tab-inactive . "#c0c0c0")))
+
 (progn
   (disable-theme 'deeper-blue)          ; first turn off the deeper-blue theme
-  (load-theme 'doom-homage-white t))    ; load the doom-homage theme
+  (load-theme 'modus-operandi t))       ; load the modus-operandi theme
 
 (blink-cursor-mode 0)
 
@@ -59,34 +80,40 @@
 ;; set local leader
 (evil-set-leader 'normal "," t)
 
-(evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
+;; (evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
+(which-key-add-key-based-replacements "<leader>q" "Quit Emacs")
 (evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
-;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'evil-quit-all)
+;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'restart-emacs)
 
+(which-key-add-key-based-replacements "<leader>f" "Files")
 ;; find file
-(evil-define-key 'normal 'global (kbd "<leader>f") nil "Files")
 (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
 ;; save file
 (evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
+;; recent files
+(evil-define-key 'normal 'global (kbd "<leader>fr") 'recentf-open-files)
 
-(evil-define-key 'normal 'global (kbd "<leader>b") nil "Buffers")
+(which-key-add-key-based-replacements "<leader>b" "Buffers")
 ;; close buffer
 (evil-define-key 'normal 'global (kbd "<leader>bd") 'kill-this-buffer)
 ;; change buffer
 (evil-define-key 'normal 'global (kbd "<leader>bb") 'switch-to-buffer)
 
 ;; bind M-x to SPC SPC
-(evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command "M-x")
+(which-key-add-key-based-replacements "<leader>SPC" "M-x")
+(evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command)
 
 (evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame)  90)))
 (evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 180)))
 (evil-define-key 'normal 'global (kbd "<leader>F3") '(lambda () (interactive)(set-frame-width (selected-frame) 270)))
 
+(which-key-add-key-based-replacements "<leader>x" "Text")
 ;; Useful to insert unicode quickly
 (evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
 
 (crafted-package-install-package 'conda)
-(require 'conda)
+;;  (crafted-package-install-package 'jedi)
+;;  (add-hook 'python-mode-hook #'jedi-mode)
 
 (crafted-package-install-package 'markdown-mode)
 

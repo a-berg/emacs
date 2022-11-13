@@ -93,10 +93,31 @@ Doom Emacs project.
 
 
 #+begin_src emacs-lisp
-  (crafted-package-install-package 'doom-themes)
+  ;; (crafted-package-install-package 'doom-themes)
+  (setq modus-themes-syntax '(green-strings yellow-comments)
+        modus-themes-fringes 'subtle
+        modus-themes-italic-constructs nil
+        modus-themes-bold-constructs t
+        modus-themes-org-blocks 'gray-background
+        modus-themes-hl-line '(intense)
+        modus-themes-paren-match '(intense)
+        modus-themes-mode-line '(borderless))
+
+  (setq modus-themes-operandi-color-overrides
+          '((bg-main . "#f7f7f7")
+            (bg-dim . "#f2f2f2")
+            (bg-alt . "#e8e8e8")
+            (bg-hl-line . "#eaeaef")
+            (bg-active . "#e0e0e0")
+            (bg-inactive . "#e6e6e6")
+            (bg-region . "#b5b5b5")
+            (bg-header . "#e4e4e4")
+            (bg-tab-active . "#f5f5f5")
+            (bg-tab-inactive . "#c0c0c0")))
+
   (progn
     (disable-theme 'deeper-blue)          ; first turn off the deeper-blue theme
-    (load-theme 'doom-homage-white t))    ; load the doom-homage theme
+    (load-theme 'modus-operandi t))       ; load the modus-operandi theme
 #+end_src
 
 ** Cursor blink
@@ -154,25 +175,28 @@ Define leader and local leader keys.
 Quit/Restart Emacs:
 
 #+begin_src emacs-lisp
-(evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
-(evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
-;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'evil-quit-all)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
+  (which-key-add-key-based-replacements "<leader>q" "Quit Emacs")
+  (evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'restart-emacs)
 #+end_src
 
 File related bindings:
 
 #+begin_src emacs-lisp
+  (which-key-add-key-based-replacements "<leader>f" "Files")
   ;; find file
-  (evil-define-key 'normal 'global (kbd "<leader>f") nil "Files")
   (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
   ;; save file
   (evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
+  ;; recent files
+  (evil-define-key 'normal 'global (kbd "<leader>fr") 'recentf-open-files)
 #+end_src
 
 Buffer related bindings:
 
 #+begin_src emacs-lisp
-  (evil-define-key 'normal 'global (kbd "<leader>b") nil "Buffers")
+  (which-key-add-key-based-replacements "<leader>b" "Buffers")
   ;; close buffer
   (evil-define-key 'normal 'global (kbd "<leader>bd") 'kill-this-buffer)
   ;; change buffer
@@ -183,7 +207,8 @@ Quickly invoke commands (=M-x=):
 
 #+begin_src emacs-lisp
   ;; bind M-x to SPC SPC
-  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command "M-x")
+  (which-key-add-key-based-replacements "<leader>SPC" "M-x")
+  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command)
 #+end_src
 
 Resize frame (still not entirely convinced...):
@@ -197,6 +222,7 @@ Resize frame (still not entirely convinced...):
 Text:
 
 #+begin_src emacs-lisp
+  (which-key-add-key-based-replacements "<leader>x" "Text")
   ;; Useful to insert unicode quickly
   (evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
 #+end_src
@@ -208,7 +234,8 @@ that?
 
 #+begin_src emacs-lisp
   (crafted-package-install-package 'conda)
-  (require 'conda)
+;;  (crafted-package-install-package 'jedi)
+;;  (add-hook 'python-mode-hook #'jedi-mode)
 #+end_src
 
 
