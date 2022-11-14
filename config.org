@@ -240,10 +240,7 @@ Coding/LSP:
 #+end_src
 
 Magit:
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
 #+begin_src emacs-lisp
   (which-key-add-key-based-replacements "<leader>g" "magit")
   (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
