@@ -72,6 +72,7 @@
 (setq-default fill-column 88)
 
 (crafted-package-install-package 'which-key)
+(which-key-mode)
 
 ;; set leader key in all states
 (evil-set-leader nil (kbd "C-SPC"))
@@ -103,6 +104,7 @@
 (which-key-add-key-based-replacements "<leader>SPC" "M-x")
 (evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command)
 
+(which-key-add-key-based-replacements "<leader>F" "Frames")
 (evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame)  90)))
 (evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 180)))
 (evil-define-key 'normal 'global (kbd "<leader>F3") '(lambda () (interactive)(set-frame-width (selected-frame) 270)))
@@ -110,6 +112,16 @@
 (which-key-add-key-based-replacements "<leader>x" "Text")
 ;; Useful to insert unicode quickly
 (evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
+;; probably will need an interactive function.
+;; (evil-define-key 'normal 'global (kbd "<leader>xs") 'evil-substitute)
+
+(which-key-add-key-based-replacements "<leader>c" "Code")
+(evil-define-key 'normal 'global (kbd "<leader>cr") 'eglot-rename)
+(evil-define-key 'normal 'global (kbd "<leader>ca") 'eglot-code-actions)
+(evil-define-key 'normal 'global (kbd "<leader>cA") 'pyvenv-activate)
+
+(which-key-add-key-based-replacements "<leader>g" "magit")
+(evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
 
 (crafted-package-install-package 'conda)
 ;;  (crafted-package-install-package 'jedi)
