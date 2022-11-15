@@ -31,10 +31,10 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (custom-set-faces
-             `(default ((t (:font "Iosevka SS04 14" :weight semi-light))))
+             `(default ((t (:font "Iosevka" :height 140 :weight 'light))))
              `(fixed-pitch ((t (:inherit (default)))))
              `(fixed-pitch-serif ((t (:inherit (default)))))
-             `(variable-pitch ((t (:font "Iosevka Aile 14" :weight semi-light)))))))
+             `(variable-pitch ((t (:font "Iosevka Aile" :height 140 :weight 'light)))))))
 
 ;; (crafted-package-install-package 'doom-themes)
 (setq modus-themes-syntax '(green-strings yellow-comments)
