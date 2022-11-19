@@ -25,7 +25,7 @@
 (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
 (require 'crafted-project)     ; built-in alternative to projectile
 (require 'crafted-speedbar)    ; built-in file-tree
-(require 'crafted-screencast)  ; show current command and binding in modeline
+;; (require 'crafted-screencast)  ; show current command and binding in modeline
 (require 'crafted-compile)     ; automatically compile some emacs lisp files
 
 (add-hook 'emacs-startup-hook
@@ -105,8 +105,8 @@
 (evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command)
 
 (which-key-add-key-based-replacements "<leader>F" "Frames")
-(evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame)  90)))
-(evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 180)))
+(evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame) 110)))
+(evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 210)))
 (evil-define-key 'normal 'global (kbd "<leader>F3") '(lambda () (interactive)(set-frame-width (selected-frame) 270)))
 
 (which-key-add-key-based-replacements "<leader>x" "Text")
@@ -122,6 +122,9 @@
 
 (which-key-add-key-based-replacements "<leader>g" "magit")
 (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
+
+(crafted-package-install-package 'neotree)
+(evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
 
 (crafted-package-install-package 'conda)
 ;;  (crafted-package-install-package 'jedi)
