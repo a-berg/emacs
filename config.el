@@ -14,6 +14,23 @@
           (lambda ()
             (add-hook 'after-save-hook #'org-babel-tangle-config)))
 
+(crafted-package-install-package 'use-package)
+;;; then bootstrap use-package
+(eval-when-compile
+  (add-to-list 'load-path "./elpa/use-package-2.4.4")
+  (require 'use-package))
+;;; small extension
+(use-package use-package-ensure-system-package
+  :ensure t)
+;;; now install quelpa and use it to also install quelpa-use-package, and we are
+;;; all set!
+(crafted-package-install-package 'quelpa)
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
+
 (require 'crafted-defaults)    ; Sensible default settings for Emacs
 (require 'crafted-updates)     ; Tools to upgrade Crafted Emacs
 (require 'crafted-completion)  ; selection framework based on `vertico`
@@ -64,12 +81,55 @@
 
 (blink-cursor-mode 0)
 
+(modify-all-frames-parameters
+ '((right-divider-width . 20)
+   (internal-border-width . 20)))
+(dolist (face '(window-divider
+                window-divider-first-pixel
+                window-divider-last-pixel))
+  (face-spec-reset-face face)
+  (set-face-foreground face (face-attribute 'default :background)))
+(set-face-background 'fringe (face-attribute 'default :background))
+
 ;; frame size at startup
-(set-frame-width (selected-frame) 90)
+(set-frame-width (selected-frame) 100)
 (set-frame-height (selected-frame) 50)
 
 ;; fill column
 (setq-default fill-column 88)
+
+(use-package org-modern
+  :quelpa (org-modern :fetcher github :repo "minad/org-modern")
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda)))
+
+(setq
+;; Edit settings
+org-auto-align-tags nil
+org-tags-column 0
+org-catch-invisible-edits 'show-and-error
+org-special-ctrl-a/e t
+org-insert-heading-respect-content t
+
+;; Org styling, hide markup etc.
+org-hide-emphasis-markers t
+org-pretty-entities t
+org-ellipsis "…"
+
+;; Agenda styling
+org-agenda-tags-column 0
+org-agenda-block-separator ?─
+org-agenda-time-grid
+'((daily today require-timed)
+  (800 1000 1200 1400 1600 1800 2000)
+  " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+org-agenda-current-time-string
+"⭠ now ─────────────────────────────────────────────────")
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 (crafted-package-install-package 'which-key)
 (which-key-mode)
@@ -129,6 +189,18 @@
 (crafted-package-install-package 'conda)
 ;;  (crafted-package-install-package 'jedi)
 ;;  (add-hook 'python-mode-hook #'jedi-mode)
+
+(use-package quarto-mode
+  :ensure-system-package
+  quarto
+  :ensure t
+  ;; :requires (polymode poly-markdown markdown-mode request)
+  :config
+  (use-package polymode :ensure t)
+  (use-package poly-markdown :ensure t)
+  (use-package markdown-mode :ensure t)
+  (use-package request :ensure t)
+  :mode (("\\.Rmd" . poly-quarto-mode)))
 
 (crafted-package-install-package 'markdown-mode)
 

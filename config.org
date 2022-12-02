@@ -37,6 +37,27 @@ In your configuration you can set any Emacs configuration variable, face
 attributes, themes, etc as you normally would.
 See the README.org file in this repository for additional information.
 
+Also, bootstrap =use-package= and =melpa= (to install some packages from git).
+
+#+begin_src emacs-lisp
+  (crafted-package-install-package 'use-package)
+  ;;; then bootstrap use-package
+  (eval-when-compile
+    (add-to-list 'load-path "./elpa/use-package-2.4.4")
+    (require 'use-package))
+  ;;; small extension
+  (use-package use-package-ensure-system-package
+    :ensure t)
+  ;;; now install quelpa and use it to also install quelpa-use-package, and we are
+  ;;; all set!
+  (crafted-package-install-package 'quelpa)
+  (quelpa
+   '(quelpa-use-package
+     :fetcher git
+     :url "https://github.com/quelpa/quelpa-use-package.git"))
+  (require 'quelpa-use-package)
+#+end_src
+
 * Crafted Modules
 
 At the moment, Crafted Emacs offers the following modules. Comment out
@@ -63,7 +84,6 @@ in the line about =crafted-evil= below.
 #+end_src
 
 * Font and theme settings
-
 ** Font settings
 
 Set the default face. The default face is the basis for most other faces used in
@@ -129,12 +149,26 @@ I don't like the cursor to blink.
 
 ** Other settings
 
+Prettify the frames a little (still not 100% sure on this one though).
+
+#+begin_src emacs-lisp
+  (modify-all-frames-parameters
+   '((right-divider-width . 20)
+     (internal-border-width . 20)))
+  (dolist (face '(window-divider
+                  window-divider-first-pixel
+                  window-divider-last-pixel))
+    (face-spec-reset-face face)
+    (set-face-foreground face (face-attribute 'default :background)))
+  (set-face-background 'fringe (face-attribute 'default :background))
+#+end_src
+
 I don't like to maximize my editor from the get-go, but the default frame (80×24) is too
 small.
 
 #+begin_src emacs-lisp
   ;; frame size at startup
-  (set-frame-width (selected-frame) 90)
+  (set-frame-width (selected-frame) 100)
   (set-frame-height (selected-frame) 50)
 #+end_src
 
@@ -144,6 +178,58 @@ the rest of my text to be like that too.
 #+begin_src emacs-lisp
   ;; fill column
   (setq-default fill-column 88)
+#+end_src
+
+* Org-mode settings
+
+I want to make more use of =org-mode=, especially =org-agenda=.
+
+** org-modern [90%]
+
+Prettify =org-mode= using the excellent =org-modern= package. I will add the hooks
+recommended by the author, using the syntax offered by =use-package=.
+
+#+begin_src emacs-lisp
+  (use-package org-modern
+    :quelpa (org-modern :fetcher github :repo "minad/org-modern")
+    :hook ((org-mode . org-modern-mode)
+           (org-agenda-finalize . org-modern-agenda)))
+#+end_src
+
+In order for org-modern to look absolutely awesome, you need to change some variables.
+
+#+begin_src emacs-lisp
+  (setq
+  ;; Edit settings
+  org-auto-align-tags nil
+  org-tags-column 0
+  org-catch-invisible-edits 'show-and-error
+  org-special-ctrl-a/e t
+  org-insert-heading-respect-content t
+
+  ;; Org styling, hide markup etc.
+  org-hide-emphasis-markers t
+  org-pretty-entities t
+  org-ellipsis "…"
+
+  ;; Agenda styling
+  org-agenda-tags-column 0
+  org-agenda-block-separator ?─
+  org-agenda-time-grid
+  '((daily today require-timed)
+    (800 1000 1200 1400 1600 1800 2000)
+    " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+  org-agenda-current-time-string
+  "⭠ now ─────────────────────────────────────────────────")
+#+end_src
+
+* Further evil
+
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
 #+end_src
 
 * =whick-key= and keybindings
@@ -264,6 +350,25 @@ that?
 ;;  (add-hook 'python-mode-hook #'jedi-mode)
 #+end_src
 
+* Quarto
+
+Quarto is a scientific/technical publishing system built on top of pandoc.
+They are so nice to provide an emacs mode (based off polymode) for their format (which
+is essentially pandoc markdown with some extras).
+
+#+begin_src emacs-lisp
+  (use-package quarto-mode
+    :ensure-system-package
+    quarto
+    :ensure t
+    ;; :requires (polymode poly-markdown markdown-mode request)
+    :config
+    (use-package polymode :ensure t)
+    (use-package poly-markdown :ensure t)
+    (use-package markdown-mode :ensure t)
+    (use-package request :ensure t)
+    :mode (("\\.Rmd" . poly-quarto-mode)))
+#+end_src
 
 * Markdown
 
