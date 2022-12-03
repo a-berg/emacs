@@ -22,8 +22,8 @@
 ;;; small extension
 (use-package use-package-ensure-system-package
   :ensure t)
-;;; now install quelpa and use it to also install quelpa-use-package, and we are
-;;; all set!
+;;; now install quelpa and use it to also install quelpa-use-package,
+;;; and we are all set!
 (crafted-package-install-package 'quelpa)
 (quelpa
  '(quelpa-use-package
@@ -130,6 +130,12 @@ org-agenda-current-time-string
   :ensure t
   :config
   (global-evil-surround-mode 1))
+
+(use-package yasnippet
+    :quelpa (yasnippet :fetcher github :repo "joaotavora/yasnippet")
+    :config
+    (crafted-package-install-package 'yasnippet-snippets)
+    (yas-global-mode 1))
 
 (crafted-package-install-package 'which-key)
 (which-key-mode)

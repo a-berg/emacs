@@ -48,8 +48,8 @@ Also, bootstrap =use-package= and =melpa= (to install some packages from git).
   ;;; small extension
   (use-package use-package-ensure-system-package
     :ensure t)
-  ;;; now install quelpa and use it to also install quelpa-use-package, and we are
-  ;;; all set!
+  ;;; now install quelpa and use it to also install quelpa-use-package,
+  ;;; and we are all set!
   (crafted-package-install-package 'quelpa)
   (quelpa
    '(quelpa-use-package
@@ -230,6 +230,16 @@ In order for org-modern to look absolutely awesome, you need to change some vari
     :ensure t
     :config
     (global-evil-surround-mode 1))
+#+end_src
+
+* I'd like to use yasnippet thank you very much
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+      :quelpa (yasnippet :fetcher github :repo "joaotavora/yasnippet")
+      :config
+      (crafted-package-install-package 'yasnippet-snippets)
+      (yas-global-mode 1))
 #+end_src
 
 * =whick-key= and keybindings
