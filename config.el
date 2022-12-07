@@ -42,6 +42,7 @@
 (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
 (require 'crafted-project)     ; built-in alternative to projectile
 (require 'crafted-speedbar)    ; built-in file-tree
+(require 'crafted-workspaces)  ; tabs and workspaces
 ;; (require 'crafted-screencast)  ; show current command and binding in modeline
 (require 'crafted-compile)     ; automatically compile some emacs lisp files
 
