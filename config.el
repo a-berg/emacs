@@ -38,7 +38,8 @@
 (require 'crafted-windows)     ; Window management configuration
 (require 'crafted-python)      ; python, needs customization
 (require 'crafted-editing)     ; Whitspace trimming, auto parens etc.
-(require 'crafted-evil)        ; An `evil-mode` configuration
+(require 'crafted-meow)
+;; (require 'crafted-evil)        ; An `evil-mode` configuration
 (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
 (require 'crafted-project)     ; built-in alternative to projectile
 (require 'crafted-speedbar)    ; built-in file-tree
@@ -127,11 +128,6 @@ org-agenda-time-grid
 org-agenda-current-time-string
 "⭠ now ─────────────────────────────────────────────────")
 
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
 (use-package yasnippet
     :quelpa (yasnippet :fetcher github :repo "joaotavora/yasnippet")
     :config
@@ -141,57 +137,8 @@ org-agenda-current-time-string
 (crafted-package-install-package 'which-key)
 (which-key-mode)
 
-;; set leader key in all states
-(evil-set-leader nil (kbd "C-SPC"))
-;; set leader key in normal state
-(evil-set-leader 'normal (kbd "SPC"))
-;; set local leader
-(evil-set-leader 'normal "," t)
-
-;; (evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
-(which-key-add-key-based-replacements "<leader>q" "Quit Emacs")
-(evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
-;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'restart-emacs)
-
-(which-key-add-key-based-replacements "<leader>f" "Files")
-;; find file
-(evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-;; save file
-(evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
-;; recent files
-(evil-define-key 'normal 'global (kbd "<leader>fr") 'recentf-open-files)
-
-(which-key-add-key-based-replacements "<leader>b" "Buffers")
-;; close buffer
-(evil-define-key 'normal 'global (kbd "<leader>bd") 'kill-this-buffer)
-;; change buffer
-(evil-define-key 'normal 'global (kbd "<leader>bb") 'switch-to-buffer)
-
-;; bind M-x to SPC SPC
-(which-key-add-key-based-replacements "<leader>SPC" "M-x")
-(evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command)
-
-(which-key-add-key-based-replacements "<leader>F" "Frames")
-(evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame) 110)))
-(evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 210)))
-(evil-define-key 'normal 'global (kbd "<leader>F3") '(lambda () (interactive)(set-frame-width (selected-frame) 270)))
-
-(which-key-add-key-based-replacements "<leader>x" "Text")
-;; Useful to insert unicode quickly
-(evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
-;; probably will need an interactive function.
-;; (evil-define-key 'normal 'global (kbd "<leader>xs") 'evil-substitute)
-
-(which-key-add-key-based-replacements "<leader>c" "Code")
-(evil-define-key 'normal 'global (kbd "<leader>cr") 'eglot-rename)
-(evil-define-key 'normal 'global (kbd "<leader>ca") 'eglot-code-actions)
-(evil-define-key 'normal 'global (kbd "<leader>cA") 'pyvenv-activate)
-
-(which-key-add-key-based-replacements "<leader>g" "magit")
-(evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
-
 (crafted-package-install-package 'neotree)
-(evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
+;; (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
 
 (crafted-package-install-package 'conda)
 (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))

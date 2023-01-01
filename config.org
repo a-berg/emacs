@@ -67,7 +67,8 @@ in the line about =crafted-evil= below.
   (require 'crafted-windows)     ; Window management configuration
   (require 'crafted-python)      ; python, needs customization
   (require 'crafted-editing)     ; Whitspace trimming, auto parens etc.
-  (require 'crafted-evil)        ; An `evil-mode` configuration
+  (require 'crafted-meow)
+  ;; (require 'crafted-evil)        ; An `evil-mode` configuration
   (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
   (require 'crafted-project)     ; built-in alternative to projectile
   (require 'crafted-speedbar)    ; built-in file-tree
@@ -218,7 +219,7 @@ In order for org-modern to look absolutely awesome, you need to change some vari
 
 * Further evil
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package evil-surround
     :ensure t
     :config
@@ -247,6 +248,9 @@ Maybe this should go into the ui?
 #+end_src
 
 ** keybindings
+:PROPERTIES:
+:header-args: :tangle no
+:END:
 
 Since I first used Spacemacs, I have grown some muscle memory for my most used commands.
 
@@ -339,7 +343,7 @@ Magit:
 
 #+begin_src emacs-lisp
   (crafted-package-install-package 'neotree)
-  (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
 #+end_src
 
 * Python
