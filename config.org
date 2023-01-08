@@ -1,10 +1,20 @@
-#+title: My Crafted Emacs Configuration File
+#+title: My Emacs Configuration File
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
-#+begin_quote
-Copied from: crafted-emacs
-#+end_quote>
+Welcome to my Emacs configuration! This is a fairly simple/minimal config currently
+based off (and depending upon) Crafted Emacs config. However, it is my desire to
+eventually make it independent.
 
+Some highlights:
+
+ * [[https://github.com/meow-edit/meow][meow]] for modal editing.
+ * Use =general.el= to define keybindings.
+ * Package management via =use-package= and =quelpa=.
+ * Theme is a slight modification of the excellent (and built in!) Modus Operandi.
+ * Terminal emulation via [[https://codeberg.org/akib/emacs-eat][EAT]] (*E* mulate *A* *T* erminal).
+
+* Setting up
+   
 Do some babel tangle config.
 
 #+begin_src emacs-lisp
@@ -25,11 +35,7 @@ Do some babel tangle config.
               (add-hook 'after-save-hook #'org-babel-tangle-config)))
 #+end_src
 
-In your configuration you can set any Emacs configuration variable, face
-attributes, themes, etc as you normally would.
-See the README.org file in this repository for additional information.
-
-Also, bootstrap =use-package= and =melpa= (to install some packages from git).
+Bootstrap =use-package= and =quelpa= (to install packages from git).
 
 #+begin_src emacs-lisp
   (crafted-package-install-package 'use-package)
@@ -37,7 +43,7 @@ Also, bootstrap =use-package= and =melpa= (to install some packages from git).
   (eval-when-compile
     (add-to-list 'load-path "./elpa/use-package-2.4.4")
     (require 'use-package))
-  ;;; small extension
+  ;;; small extension to use-package-ensure-system-package
   (use-package use-package-ensure-system-package
     :ensure t)
   ;;; now install quelpa and use it to also install quelpa-use-package,
@@ -50,14 +56,14 @@ Also, bootstrap =use-package= and =melpa= (to install some packages from git).
   (require 'quelpa-use-package)
 #+end_src
 
+
 * Crafted Modules
 
-At the moment, Crafted Emacs offers the following modules. Comment out
-everything you don't want to use.
-At the very least, you should decide whether or not you want to use [[https://github.com/emacs-evil/evil][evil-mode]],
-as it will greatly change how you interact with Emacs. So, if you prefer
-Vim-style keybindings over vanilla Emacs keybindings remove the comment
-in the line about =crafted-evil= below.
+At the moment, Crafted Emacs offers the following modules. Comment out everything you
+don't want to use.
+
+*NOTE*: these crafted modules would need to be replaced (except meow, since I wrote it) by
+custom config and modules in order to "break free" from Crafted Emacs.  For now, it's ok.
 
 #+begin_src emacs-lisp
   (require 'crafted-defaults)    ; Sensible default settings for Emacs
@@ -68,7 +74,6 @@ in the line about =crafted-evil= below.
   (require 'crafted-python)      ; python, needs customization
   (require 'crafted-editing)     ; Whitspace trimming, auto parens etc.
   (require 'crafted-meow)
-  ;; (require 'crafted-evil)        ; An `evil-mode` configuration
   (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
   (require 'crafted-project)     ; built-in alternative to projectile
   (require 'crafted-speedbar)    ; built-in file-tree
@@ -88,13 +93,15 @@ faces generally used as the default face for code. The variable-pitch face is us
 preferred.
 
 #+begin_src emacs-lisp
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (custom-set-faces
-               `(default ((t (:font "Iosevka" :height 140 :weight light))))
-               `(fixed-pitch ((t (:inherit (default)))))
-               `(fixed-pitch-serif ((t (:inherit (default)))))
-               `(variable-pitch ((t (:font "Iosevka Aile" :height 140 :weight light)))))))
+  (use-package font-lock
+    ;; :ensure t
+    :config
+    (set-face-attribute 'default nil
+                        :family "Iosevka Cosmic" :height 140 :weight 'light)
+    (set-face-attribute 'variable-pitch nil
+                        :family "Iosevka Aile" :height 140 :weight 'light)
+    (set-face-attribute 'fixed-pitch nil
+                        :inherit 'default))
 #+end_src
 
 ** Theme settings

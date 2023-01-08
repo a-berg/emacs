@@ -19,7 +19,7 @@
 (eval-when-compile
   (add-to-list 'load-path "./elpa/use-package-2.4.4")
   (require 'use-package))
-;;; small extension
+;;; small extension to use-package-ensure-system-package
 (use-package use-package-ensure-system-package
   :ensure t)
 ;;; now install quelpa and use it to also install quelpa-use-package,
@@ -39,7 +39,6 @@
 (require 'crafted-python)      ; python, needs customization
 (require 'crafted-editing)     ; Whitspace trimming, auto parens etc.
 (require 'crafted-meow)
-;; (require 'crafted-evil)        ; An `evil-mode` configuration
 (require 'crafted-org)         ; org-appear, clickable hyperlinks etc.
 (require 'crafted-project)     ; built-in alternative to projectile
 (require 'crafted-speedbar)    ; built-in file-tree
@@ -47,13 +46,15 @@
 ;; (require 'crafted-screencast)  ; show current command and binding in modeline
 (require 'crafted-compile)     ; automatically compile some emacs lisp files
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (custom-set-faces
-             `(default ((t (:font "Iosevka" :height 140 :weight light))))
-             `(fixed-pitch ((t (:inherit (default)))))
-             `(fixed-pitch-serif ((t (:inherit (default)))))
-             `(variable-pitch ((t (:font "Iosevka Aile" :height 140 :weight light)))))))
+(use-package font-lock
+  ;; :ensure t
+  :config
+  (set-face-attribute 'default nil
+                      :family "Iosevka Cosmic" :height 140 :weight 'light)
+  (set-face-attribute 'variable-pitch nil
+                      :family "Iosevka Aile" :height 140 :weight 'light)
+  (set-face-attribute 'fixed-pitch nil
+                      :inherit 'default))
 
 ;; (crafted-package-install-package 'doom-themes)
 (setq modus-themes-syntax '(green-strings yellow-comments)
