@@ -98,7 +98,7 @@ preferred.
   (add-hook 'emacs-startup-hook
             (lambda ()
               (custom-set-faces
-               `(default ((t (:font "Iosevka" :height 140 :weight light))))
+               `(default ((t (:font "Iosevka Cosmic" :height 140 :weight light))))
                `(fixed-pitch ((t (:inherit (default)))))
                `(fixed-pitch-serif ((t (:inherit (default)))))
                `(variable-pitch ((t (:font "Iosevka Aile" :height 140 :weight light)))))))
@@ -299,6 +299,23 @@ Buffer related bindings:
   ;; change buffer
   (evil-define-key 'normal 'global (kbd "<leader>bb") 'switch-to-buffer)
 #+end_src
+
+Tabs keybindings:
+
+#+begin_src emacs-lisp
+  ;; (which-key-add-key-based-replacements "<leader><tab>" "Tabs")
+  (use-package tabspaces
+    :custom
+    (tabspaces-use-filtered-buffers-as-default t)
+    (tabspaces-default-tab "Default")
+    (tabspaces-remove-to-default t)
+    (tabspaces-include-buffers '("*scratch*"))
+    ;; sessions
+    (tabspaces-session t)
+    (tabspaces-session-auto-restore t))
+#+end_src
+
+I have no idea how to remap =C-c TAB= to =SPC TAB= in normal mode.
 
 Quickly invoke commands (=M-x=):
 

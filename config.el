@@ -49,7 +49,7 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (custom-set-faces
-             `(default ((t (:font "Iosevka" :height 140 :weight light))))
+             `(default ((t (:font "Iosevka Cosmic" :height 140 :weight light))))
              `(fixed-pitch ((t (:inherit (default)))))
              `(fixed-pitch-serif ((t (:inherit (default)))))
              `(variable-pitch ((t (:font "Iosevka Aile" :height 140 :weight light)))))))
@@ -166,6 +166,17 @@ org-agenda-current-time-string
 (evil-define-key 'normal 'global (kbd "<leader>bd") 'kill-this-buffer)
 ;; change buffer
 (evil-define-key 'normal 'global (kbd "<leader>bb") 'switch-to-buffer)
+
+;; (which-key-add-key-based-replacements "<leader><tab>" "Tabs")
+(use-package tabspaces
+  :custom
+  (tabspaces-use-filtered-buffers-as-default t)
+  (tabspaces-default-tab "Default")
+  (tabspaces-remove-to-default t)
+  (tabspaces-include-buffers '("*scratch*"))
+  ;; sessions
+  (tabspaces-session t)
+  (tabspaces-session-auto-restore t))
 
 ;; bind M-x to SPC SPC
 (which-key-add-key-based-replacements "<leader>SPC" "M-x")
