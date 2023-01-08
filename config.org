@@ -217,15 +217,6 @@ In order for org-modern to look absolutely awesome, you need to change some vari
   "⭠ now ─────────────────────────────────────────────────")
 #+end_src
 
-* Further evil
-
-#+begin_src emacs-lisp :tangle no
-  (use-package evil-surround
-    :ensure t
-    :config
-    (global-evil-surround-mode 1))
-#+end_src
-
 * I'd like to use yasnippet thank you very much
 
 #+begin_src emacs-lisp
@@ -247,103 +238,29 @@ Maybe this should go into the ui?
   (which-key-mode)
 #+end_src
 
-** keybindings
-:PROPERTIES:
-:header-args: :tangle no
-:END:
+** TODO keybindings
 
-Since I first used Spacemacs, I have grown some muscle memory for my most used commands.
-
-Define leader and local leader keys.
-
-#+begin_src emacs-lisp
-  ;; set leader key in all states
-  (evil-set-leader nil (kbd "C-SPC"))
-  ;; set leader key in normal state
-  (evil-set-leader 'normal (kbd "SPC"))
-  ;; set local leader
-  (evil-set-leader 'normal "," t)
-#+end_src
-
-Quit/Restart Emacs:
-
-#+begin_src emacs-lisp
-  ;; (evil-define-key 'normal 'global (kbd "<leader>q") nil "Quit")
-  (which-key-add-key-based-replacements "<leader>q" "Quit Emacs")
-  (evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>qr") 'restart-emacs)
-#+end_src
-
-File related bindings:
-
-#+begin_src emacs-lisp
-  (which-key-add-key-based-replacements "<leader>f" "Files")
-  ;; find file
-  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-  ;; save file
-  (evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
-  ;; recent files
-  (evil-define-key 'normal 'global (kbd "<leader>fr") 'recentf-open-files)
-#+end_src
-
-Buffer related bindings:
-
-#+begin_src emacs-lisp
-  (which-key-add-key-based-replacements "<leader>b" "Buffers")
-  ;; close buffer
-  (evil-define-key 'normal 'global (kbd "<leader>bd") 'kill-this-buffer)
-  ;; change buffer
-  (evil-define-key 'normal 'global (kbd "<leader>bb") 'switch-to-buffer)
-#+end_src
-
-Quickly invoke commands (=M-x=):
-
-#+begin_src emacs-lisp
-  ;; bind M-x to SPC SPC
-  (which-key-add-key-based-replacements "<leader>SPC" "M-x")
-  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'execute-extended-command)
-#+end_src
-
-Resize frame (still not entirely convinced...):
-
-#+begin_src emacs-lisp
-  (which-key-add-key-based-replacements "<leader>F" "Frames")
-  (evil-define-key 'normal 'global (kbd "<leader>F1") '(lambda () (interactive)(set-frame-width (selected-frame) 110)))
-  (evil-define-key 'normal 'global (kbd "<leader>F2") '(lambda () (interactive)(set-frame-width (selected-frame) 210)))
-  (evil-define-key 'normal 'global (kbd "<leader>F3") '(lambda () (interactive)(set-frame-width (selected-frame) 270)))
-#+end_src
-
-Text:
-
-#+begin_src emacs-lisp
-  (which-key-add-key-based-replacements "<leader>x" "Text")
-  ;; Useful to insert unicode quickly
-  (evil-define-key 'normal 'global (kbd "<leader>xu") 'insert-char)
-  ;; probably will need an interactive function.
-  ;; (evil-define-key 'normal 'global (kbd "<leader>xs") 'evil-substitute)
-#+end_src
-
-Coding/LSP:
-
-#+begin_src emacs-lisp
-  (which-key-add-key-based-replacements "<leader>c" "Code")
-  (evil-define-key 'normal 'global (kbd "<leader>cr") 'eglot-rename)
-  (evil-define-key 'normal 'global (kbd "<leader>ca") 'eglot-code-actions)
-  (evil-define-key 'normal 'global (kbd "<leader>cA") 'pyvenv-activate)
-#+end_src
-
-Magit:
-
-#+begin_src emacs-lisp
-  (which-key-add-key-based-replacements "<leader>g" "magit")
-  (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
-#+end_src
+Add general.el keybindings as a module and =require= it here.
 
 * Neotree
 
 #+begin_src emacs-lisp
   (crafted-package-install-package 'neotree)
   ;; (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
+#+end_src
+
+* Emacs EAT
+
+Emulate A Terminal. Proper terminal emulation in Emacs.
+
+#+begin_src emacs-lisp
+  (quelpa '(eat :fetcher git
+                :url "https://codeberg.org/akib/emacs-eat"
+                :files ("*.el" ("term" "term/*.el") "*.texi"
+                        "*.ti" ("terminfo/e" "terminfo/e/*")
+                        ("terminfo/65" "terminfo/65/*")
+                        ("integration" "integration/*")
+                        (:exclude ".dir-locals.el" "*-tests.el"))))
 #+end_src
 
 * Python

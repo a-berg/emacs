@@ -140,6 +140,14 @@ org-agenda-current-time-string
 (crafted-package-install-package 'neotree)
 ;; (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
 
+(quelpa '(eat :fetcher git
+              :url "https://codeberg.org/akib/emacs-eat"
+              :files ("*.el" ("term" "term/*.el") "*.texi"
+                      "*.ti" ("terminfo/e" "terminfo/e/*")
+                      ("terminfo/65" "terminfo/65/*")
+                      ("integration" "integration/*")
+                      (:exclude ".dir-locals.el" "*-tests.el"))))
+
 (crafted-package-install-package 'conda)
 (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
   ;;  (crafted-package-install-package 'jedi)

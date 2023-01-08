@@ -1,5 +1,4 @@
 ;;; crafted-meow.el --- Meow install and configuration  -*- lexical-binding: t; -*-
-
 (use-package meow
   :ensure t
   :config
@@ -11,6 +10,7 @@
        '("j" . meow-next)
        '("k" . meow-prev)
        '("<escape>" . ignore))
+
       (meow-leader-define-key
        ;; SPC j/k will run the original command in MOTION state.
        '("j" . "H-j")
@@ -27,7 +27,15 @@
        '("9" . meow-digit-argument)
        '("0" . meow-digit-argument)
        '("/" . meow-keypad-describe-key)
-       '("?" . meow-cheatsheet))
+       '("?" . meow-cheatsheet)
+       ;; Quick launchers
+       '("SPC" . meow-M-x)
+       ;; '("ff" . find-file)
+       ;; '("fs" . save-buffer)
+       ;; '("bd" . kill-this-buffer)
+       ;; '("bb" . ido-switch-buffer)
+       '("v" . magit-status))
+
       (meow-normal-define-key
        '("0" . meow-expand-0)
        '("9" . meow-expand-9)
@@ -90,7 +98,7 @@
        '("z" . meow-pop-selection)
        '("'" . repeat)
        '("<escape>" . ignore)))
-
+
     (meow-setup)
     (meow-global-mode 1)))
 
