@@ -1,19 +1,11 @@
-#+title: Example Crafted Emacs User Configuration File
+#+title: My Crafted Emacs Configuration File
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
-Crafted Emacs supports user customization through a =config.org= file similar to
-this one.
+#+begin_quote
+Copied from: crafted-emacs
+#+end_quote>
 
-To get you started, copy both example files to your Crafted Emacs configuration
-directory, e.g.:
-- copy =examples/example-config.el= to =~/.crafted-emacs/config.el=
-- copy =examples/example-config.org= to =~/.crafted-emacs/config.org=
-- restart Emacs
-
-After that, whenever you edit =config.org= in Emacs and save it, it updates
-=config.el= in the same directory.
-
-See the [[https://orgmode.org/manual/Extracting-Source-Code.html][Org Manual]] for details and alternatives.
+Do some babel tangle config.
 
 #+begin_src emacs-lisp
   ;;; config.el -- Example Crafted Emacs user customization file -*- lexical-binding: t; -*-
@@ -374,8 +366,9 @@ that?
 
 #+begin_src emacs-lisp
   (crafted-package-install-package 'conda)
-;;  (crafted-package-install-package 'jedi)
-;;  (add-hook 'python-mode-hook #'jedi-mode)
+  (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
+    ;;  (crafted-package-install-package 'jedi)
+    ;;  (add-hook 'python-mode-hook #'jedi-mode)
 #+end_src
 
 * Quarto

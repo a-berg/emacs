@@ -205,8 +205,9 @@ org-agenda-current-time-string
 (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
 
 (crafted-package-install-package 'conda)
-;;  (crafted-package-install-package 'jedi)
-;;  (add-hook 'python-mode-hook #'jedi-mode)
+(add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
+  ;;  (crafted-package-install-package 'jedi)
+  ;;  (add-hook 'python-mode-hook #'jedi-mode)
 
 (use-package quarto-mode
   :ensure-system-package
