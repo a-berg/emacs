@@ -80,6 +80,7 @@
        '("o" . meow-block)
        '("O" . meow-to-block)
        '("p" . meow-yank)
+       '("P" . meow-clipboard-yank)
        '("q" . meow-quit)
        '("Q" . meow-goto-line)
        '("r" . meow-replace)
@@ -94,7 +95,7 @@
        '("x" . meow-line)
        '("X" . meow-goto-line)
        '("y" . meow-save)
-       '("Y" . meow-sync-grab)
+       '("Y" . meow-clipboard-save) ; meow-sync-grab
        '("z" . meow-pop-selection)
        '("'" . repeat)
        '("<escape>" . ignore)))

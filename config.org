@@ -56,7 +56,6 @@ Bootstrap =use-package= and =quelpa= (to install packages from git).
   (require 'quelpa-use-package)
 #+end_src
 
-
 * Crafted Modules
 
 At the moment, Crafted Emacs offers the following modules. Comment out everything you
@@ -245,7 +244,7 @@ Maybe this should go into the ui?
   (which-key-mode)
 #+end_src
 
-** TODO keybindings
+** TODO (require 'crafted-python)      ; python, needs customizationkeybindings
 
 Add general.el keybindings as a module and =require= it here.
 
@@ -254,6 +253,21 @@ Add general.el keybindings as a module and =require= it here.
 #+begin_src emacs-lisp
   (crafted-package-install-package 'neotree)
   ;; (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
+#+end_src
+
+* Emacs Tree-Sitter
+
+We need modern syntax highlighting. But also, tree-sitter has been officially adopted by
+the next Emacs version, so it's future-proof.
+
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :quelpa (tree-sitter :fetcher github :repo "ubolonton/emacs-tree-sitter" :files ("lisp/*.el"))
+    ;; :hook ;; will add hooks for python once I play a bit with TS queries
+    )
+  (use-package tree-sitter-langs
+    :quelpa (tree-sitter-langs :fetcher github :repo "ubolonton/emacs-tree-sitter" :files ("langs/*.el" "langs/queries"))
+    :after tree-sitter)
 #+end_src
 
 * Emacs EAT
@@ -270,26 +284,51 @@ Emulate A Terminal. Proper terminal emulation in Emacs.
                         (:exclude ".dir-locals.el" "*-tests.el"))))
 #+end_src
 
-* Python
+* Languages
+
+** Python
 
 I tend to use conda a lot (being data scientist/ML evildoer and all) so probably change
 that?
 
 #+begin_src emacs-lisp
-  (crafted-package-install-package 'conda)
+  (setenv "WORKON_HOME" "~/mambaforge/envs/")
   (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
     ;;  (crafted-package-install-package 'jedi)
     ;;  (add-hook 'python-mode-hook #'jedi-mode)
 #+end_src
 
-* Quarto
+** yaml
+
+#+begin_src emacs-lisp
+  (use-package yaml-pro)
+#+end_src
+
+** Haskell
+
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :ensure t
+    :init
+    (progn
+      (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+      (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+      (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+      (setq haskell-process-args-cabal-new-repl
+            '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
+      (setq haskell-process-type 'cabal-new-repl)
+      (setq haskell-stylish-on-save 't)
+      (setq haskell-tags-on-save 't)))
+#+end_src
+
+** Quarto
 
 Quarto is a scientific/technical publishing system built on top of pandoc.
 They are so nice to provide an emacs mode (based off polymode) for their format (which
 is essentially pandoc markdown with some extras).
 
 #+begin_src emacs-lisp
-  (use-package quarto-mode
+  (use-package quarto-mode                ;
     :ensure-system-package
     quarto
     :ensure t
@@ -302,7 +341,7 @@ is essentially pandoc markdown with some extras).
     :mode (("\\.Rmd" . poly-quarto-mode)))
 #+end_src
 
-* Markdown
+** Markdown
 
 Possibly should move to a small module. Maybe try to use marksman idk.
 

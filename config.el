@@ -141,6 +141,14 @@ org-agenda-current-time-string
 (crafted-package-install-package 'neotree)
 ;; (evil-define-key 'normal 'global (kbd "<leader>fT") 'neotree-toggle)
 
+(use-package tree-sitter
+  :quelpa (tree-sitter :fetcher github :repo "ubolonton/emacs-tree-sitter" :files ("lisp/*.el"))
+  ;; :hook ;; will add hooks for python once I play a bit with TS queries
+  )
+(use-package tree-sitter-langs
+  :quelpa (tree-sitter-langs :fetcher github :repo "ubolonton/emacs-tree-sitter" :files ("langs/*.el" "langs/queries"))
+  :after tree-sitter)
+
 (quelpa '(eat :fetcher git
               :url "https://codeberg.org/akib/emacs-eat"
               :files ("*.el" ("term" "term/*.el") "*.texi"
@@ -149,12 +157,27 @@ org-agenda-current-time-string
                       ("integration" "integration/*")
                       (:exclude ".dir-locals.el" "*-tests.el"))))
 
-(crafted-package-install-package 'conda)
+(setenv "WORKON_HOME" "~/mambaforge/envs/")
 (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
   ;;  (crafted-package-install-package 'jedi)
   ;;  (add-hook 'python-mode-hook #'jedi-mode)
 
-(use-package quarto-mode
+(use-package yaml-pro)
+
+(use-package haskell-mode
+  :ensure t
+  :init
+  (progn
+    (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+    (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+    (setq haskell-process-args-cabal-new-repl
+          '("--ghc-options=-ferror-spans -fshow-loaded-modules"))
+    (setq haskell-process-type 'cabal-new-repl)
+    (setq haskell-stylish-on-save 't)
+    (setq haskell-tags-on-save 't)))
+
+(use-package quarto-mode                ;
   :ensure-system-package
   quarto
   :ensure t
