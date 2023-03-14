@@ -311,7 +311,6 @@ Emulate A Terminal. Proper terminal emulation in Emacs.
     :ensure t)
 #+end_src
 
-
 ** Haskell
 
 #+begin_src emacs-lisp
@@ -355,6 +354,13 @@ Possibly should move to a small module. Maybe try to use marksman idk.
 
 #+begin_src emacs-lisp
   (crafted-package-install-package 'markdown-mode)
+#+end_src
+
+** fish
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package fish-mode
+    :ensure t)
 #+end_src
 
 * Magit
