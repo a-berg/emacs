@@ -358,7 +358,7 @@ Possibly should move to a small module. Maybe try to use marksman idk.
 
 ** fish
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package fish-mode
     :ensure t)
 #+end_src
