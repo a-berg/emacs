@@ -157,8 +157,11 @@ org-agenda-current-time-string
                       ("integration" "integration/*")
                       (:exclude ".dir-locals.el" "*-tests.el"))))
 
-(setenv "WORKON_HOME" "~/mambaforge/envs/")
 (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
+(setenv "WORKON_HOME" "~/mambaforge/envs/")
+(use-package ein
+  :commands ein:run
+  :ensure t)
   ;;  (crafted-package-install-package 'jedi)
   ;;  (add-hook 'python-mode-hook #'jedi-mode)
 

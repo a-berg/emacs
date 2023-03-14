@@ -288,12 +288,12 @@ Emulate A Terminal. Proper terminal emulation in Emacs.
 
 ** Python
 
-I tend to use conda a lot (being data scientist/ML evildoer and all) so probably change
-that?
-
 #+begin_src emacs-lisp
-  (setenv "WORKON_HOME" "~/mambaforge/envs/")
   (add-hook 'conda-postactivate-hook (lambda () (eglot-reconnect)))
+  (setenv "WORKON_HOME" "~/mambaforge/envs/")
+  (use-package ein
+    :commands ein:run
+    :ensure t)
     ;;  (crafted-package-install-package 'jedi)
     ;;  (add-hook 'python-mode-hook #'jedi-mode)
 #+end_src
