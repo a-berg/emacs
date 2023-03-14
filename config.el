@@ -52,9 +52,9 @@
   (set-face-attribute 'default nil
                       :family "Iosevka Cosmic" :height 140 :weight 'light)
   (set-face-attribute 'variable-pitch nil
-                      :family "Iosevka Aile" :height 140 :weight 'light)
+                      :family "Iosevka MilkyWay" :height 140 :weight 'light)
   (set-face-attribute 'fixed-pitch nil
-                      :inherit 'default))
+                      :family "Iosevka Cosmic" :height 140 :weight 'light))
 
 ;; (crafted-package-install-package 'doom-themes)
 (setq modus-themes-syntax '(green-strings yellow-comments)
@@ -163,6 +163,9 @@ org-agenda-current-time-string
   ;;  (add-hook 'python-mode-hook #'jedi-mode)
 
 (use-package yaml-pro)
+
+(use-package just-mode
+  :ensure t)
 
 (use-package haskell-mode
   :ensure t
