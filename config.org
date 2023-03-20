@@ -368,7 +368,11 @@ Possibly should move to a small module. Maybe try to use marksman idk.
 Magit is one of these packages in Emacs that you can't find anywhere else.
 
 #+begin_src emacs-lisp
-  (crafted-package-install-package 'magit)
+    (use-package magit
+      :ensure t)
+    (use-package forge
+      :after magit
+      :ensure t)
 #+end_src
 
 I'm starting to think: should I move things like this to a module, and define

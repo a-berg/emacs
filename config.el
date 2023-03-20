@@ -200,7 +200,11 @@ org-agenda-current-time-string
 (use-package fish-mode
   :ensure t)
 
-(crafted-package-install-package 'magit)
+(use-package magit
+  :ensure t)
+(use-package forge
+  :after magit
+  :ensure t)
 
 ;; To not load `custom.el' after `config.el', uncomment this line.
 ;; (setq crafted-load-custom-file nil)
